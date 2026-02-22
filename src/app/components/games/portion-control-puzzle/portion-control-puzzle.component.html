@@ -1,0 +1,53 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>✨ {{ translate('game.memory.title') }}</h1>
+    <div class="game-stats">
+      <div class="stat">{{ translate('game.score') }}: <span class="score-value">{{ score }}</span></div>
+      <div class="stat">{{ translate('game.memory.pairs') }}: <span class="pairs-value">{{ pairsFound }}/{{ totalPairs }}</span></div>
+      <div class="stat">{{ translate('game.moves') }}: <span class="moves-value">{{ moves }}</span></div>
+    </div>
+  </div>
+
+  <div class="game-content" *ngIf="!gameStarted">
+    <div class="welcome-screen">
+      <div class="anime-character">🧩✨</div>
+      <h2>{{ translate('game.memory.welcome') }}</h2>
+      <p>{{ translate('game.memory.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+  </div>
+
+  <div class="game-content" *ngIf="gameStarted">
+    <div class="character-section">
+      <div class="anime-character-large">
+        <div class="character-face">👧</div>
+        <div class="character-name">Sakura</div>
+      </div>
+    </div>
+
+    <div class="memory-board">
+      <div class="cards-grid">
+        <div 
+          *ngFor="let card of shuffledCards" 
+          class="memory-card"
+          [class.flipped]="card.flipped"
+          [class.matched]="card.matched"
+          (click)="flipCard(card)"
+          [@flipAnimation]>
+          <div class="card-front">?</div>
+          <div class="card-back">
+            <div class="card-icon">{{ card.icon }}</div>
+            <div class="card-food">{{ card.food }}</div>
+            <div class="card-portion">{{ card.portion }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-instructions">
+      <p>💡 {{ translate('game.memory.instruction') }}</p>
+      <p>🎯 {{ translate('game.memory.pairs') }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>✨ {{ translate('game.playground.title') }}</h1>
+    <div class="game-stats">
+      <div class="stat">{{ translate('game.score') }}: <span class="score-value">{{ score }}</span></div>
+      <div class="stat">{{ translate('game.moves') }}: <span class="moves-value">{{ moves }}</span></div>
+    </div>
+  </div>
+
+  <div class="game-content" *ngIf="!gameStarted">
+    <div class="welcome-screen">
+      <div class="anime-character">🎮✨</div>
+      <h2>{{ translate('game.playground.welcome') }}</h2>
+      <p>{{ translate('game.playground.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+  </div>
+
+  <div class="game-content" *ngIf="gameStarted">
+    <div class="character-section">
+      <div class="anime-character-large">
+        <div class="character-face">🎮</div>
+        <div class="character-name">Kaito</div>
+      </div>
+    </div>
+
+    <div class="puzzle-board-container">
+      <div class="puzzle-board">
+        <div *ngFor="let row of board" class="puzzle-row">
+          <div 
+            *ngFor="let tile of row" 
+            class="puzzle-tile"
+            [@tileAnimation]="tile.selected ? 'selected' : 'normal'"
+            [style.background-color]="getTileColor(tile.type)"
+            (click)="selectTile(tile)"
+            [class.selected]="tile.selected">
+            <div class="tile-icon">{{ tile.icon }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-instructions">
+      <p>💡 {{ translate('game.playground.instruction') }}</p>
+      <p>🎯 {{ translate('game.playground.active') }}</p>
+    </div>
+  </div>
+</div>

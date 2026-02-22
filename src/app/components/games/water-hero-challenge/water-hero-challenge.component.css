@@ -1,0 +1,219 @@
+.game-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+  padding: 20px;
+}
+
+.game-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.home-button {
+  padding: 10px 20px;
+  background: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.home-button:hover {
+  transform: scale(1.05);
+}
+
+.game-header h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.game-stats {
+  display: flex;
+  gap: 15px;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 12px 18px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.game-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-screen {
+  text-align: center;
+  background: white;
+  padding: 60px;
+  border-radius: 30px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.anime-character {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.anime-character-large {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.character-face {
+  font-size: 6rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.character-name {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.character-section {
+  text-align: center;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 30px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.welcome-screen h2 {
+  font-size: 2.8rem;
+  background: linear-gradient(135deg, #30cfd0, #330867);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 15px;
+}
+
+.start-button {
+  padding: 18px 45px;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(48, 207, 208, 0.4);
+  font-weight: bold;
+}
+
+.start-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(48, 207, 208, 0.6);
+}
+
+.puzzle-board-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.sliding-puzzle-board {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+
+.puzzle-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.puzzle-row:last-child {
+  margin-bottom: 0;
+}
+
+.puzzle-piece {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #30cfd0, #330867);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border: 3px solid white;
+}
+
+.puzzle-piece:hover:not(.empty) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.puzzle-piece.empty {
+  background: rgba(48, 207, 208, 0.3);
+  cursor: default;
+}
+
+.piece-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.piece-empty {
+  font-size: 3rem;
+}
+
+.game-instructions {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.game-instructions p {
+  color: white;
+  font-size: 1.1rem;
+  margin: 8px 0;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .game-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .puzzle-piece {
+    width: 60px;
+    height: 60px;
+  }
+
+  .piece-number {
+    font-size: 1.5rem;
+  }
+}

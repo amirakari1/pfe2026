@@ -1,0 +1,153 @@
+<div class="home">
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-top">
+        <h1 class="header-title">{{ translate('app.title') }}</h1>
+        <app-language-switcher></app-language-switcher>
+      </div>
+      <p class="header-subtitle">{{ translate('app.subtitle') }}</p>
+      <div class="ai-assistant-banner">
+        <a routerLink="/ai-assistant" class="ai-banner-link">
+          <span class="ai-icon">🤖</span>
+          <span class="ai-text">{{ translate('home.ai.banner') }}</span>
+          <span class="ai-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Project Presentation Section -->
+  <section class="presentation-section">
+    <div class="container">
+      <h2 class="section-title">{{ translate('home.about.title') }}</h2>
+      <div class="presentation-content">
+        <div class="presentation-text">
+          <p>{{ translate('home.about.welcome') }}</p>
+          <p>{{ translate('home.about.mission') }}</p>
+          <h3>{{ translate('home.about.objectives') }}</h3>
+          <ul class="objectives-list">
+            <li>{{ translate('home.about.objective1') }}</li>
+            <li>{{ translate('home.about.objective2') }}</li>
+            <li>{{ translate('home.about.objective3') }}</li>
+            <li>{{ translate('home.about.objective4') }}</li>
+            <li>{{ translate('home.about.objective5') }}</li>
+          </ul>
+        </div>
+        <div class="presentation-stats">
+          <div class="stat-card">
+            <div class="stat-number">8+</div>
+            <div class="stat-label">{{ translate('home.stats.games') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">5-12</div>
+            <div class="stat-label">{{ translate('home.stats.age') }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">{{ translate('home.stats.fun') }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Games Section -->
+  <section class="games-section">
+    <div class="container">
+      <h2 class="section-title">{{ translate('home.games.title') }}</h2>
+      <p class="section-description">{{ translate('home.games.description') }}</p>
+      <div class="games-grid">
+        <div *ngFor="let game of games" class="game-card">
+          <div class="game-icon">{{ game.icon }}</div>
+          <div class="game-content">
+            <h3 class="game-title">{{ getGameTitle(game.id) }}</h3>
+            <p class="game-description">{{ getGameDescription(game.id) }}</p>
+            <div class="game-meta">
+              <span class="game-age">👶 {{ getAgeRange(game.id) }}</span>
+              <span class="game-category">{{ getGameCategory(game.id) }}</span>
+            </div>
+            <button class="game-button" (click)="playGame(game.route)">{{ translate('game.play') }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="container">
+      <h2 class="section-title">{{ translate('home.contact.title') }}</h2>
+      <p class="section-description">{{ translate('home.contact.description') }}</p>
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <h3>{{ translate('home.contact.email') }}</h3>
+              <p>info&#64;obesityprevention.org</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📱</div>
+            <div>
+              <h3>{{ translate('home.contact.phone') }}</h3>
+              <p>+1 (555) 123-4567</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <h3>{{ translate('home.contact.address') }}</h3>
+              <p>123 Health Street<br />Wellness City, WC 12345</p>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+          <div class="form-group">
+            <label for="name">{{ translate('home.contact.name') }}</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              [(ngModel)]="formData.name"
+              required
+              [placeholder]="translate('home.contact.namePlaceholder')"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">{{ translate('home.contact.email') }}</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="formData.email"
+              required
+              [placeholder]="translate('home.contact.emailPlaceholder')"
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">{{ translate('home.contact.message') }}</label>
+            <textarea
+              id="message"
+              name="message"
+              [(ngModel)]="formData.message"
+              required
+              rows="5"
+              [placeholder]="translate('home.contact.messagePlaceholder')"
+            ></textarea>
+          </div>
+          <button type="submit" class="submit-button" [disabled]="!contactForm.valid">{{ translate('home.contact.send') }}</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>{{ translate('home.footer.copyright') }}</p>
+      <p class="footer-note">{{ translate('home.footer.note') }}</p>
+    </div>
+  </footer>
+</div>

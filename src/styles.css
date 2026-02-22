@@ -1,0 +1,125 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #4CAF50;
+  --primary-dark: #45a049;
+  --secondary-color: #FF9800;
+  --accent-color: #2196F3;
+  --text-dark: #333;
+  --text-light: #666;
+  --bg-light: #f5f5f5;
+  --bg-white: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .container,
+[dir="rtl"] .game-content,
+[dir="rtl"] .welcome-screen,
+[dir="rtl"] .game-over-screen {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .header-top {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .presentation-content {
+  direction: rtl;
+}
+
+[dir="rtl"] .objectives-list {
+  padding-right: 30px;
+  padding-left: 0;
+}
+
+[dir="rtl"] .objectives-list li::before {
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .contact-content {
+  direction: rtl;
+}
+
+[dir="rtl"] .contact-item {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .form-group label {
+  text-align: right;
+}
+
+[dir="rtl"] .form-group input,
+[dir="rtl"] .form-group textarea {
+  text-align: right;
+}
+
+[dir="rtl"] .game-header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .game-stats {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .puzzle-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .cards-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .meals-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .foods-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .games-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .seeds-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .items-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .activities-grid {
+  direction: rtl;
+}
+
+/* Arabic Font Support */
+[dir="rtl"] body,
+[dir="rtl"] * {
+  font-family: 'Segoe UI', 'Tahoma', 'Arial', 'Helvetica', sans-serif;
+}

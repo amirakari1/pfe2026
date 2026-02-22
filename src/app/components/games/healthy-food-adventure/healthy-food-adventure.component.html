@@ -1,0 +1,49 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🍎 {{ translate('game.healthyFood.title') }}</h1>
+    <div class="game-stats">
+      <div class="stat">{{ translate('game.score') }}: <span class="score-value">{{ score }}</span></div>
+      <div class="stat">{{ translate('game.level') }}: <span class="level-value">{{ level }}</span></div>
+      <div class="stat">{{ translate('game.lives') }}: <span class="lives-value">❤️{{ lives }}</span></div>
+    </div>
+  </div>
+
+  <div class="game-content" *ngIf="!gameStarted && !gameOver">
+    <div class="welcome-screen">
+      <h2>{{ translate('game.healthyFood.title') }}! 🎮</h2>
+      <p>{{ translate('game.healthyFood.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+  </div>
+
+  <div class="game-content" *ngIf="gameStarted && !gameOver">
+    <div class="instruction">{{ translate('game.healthyFood.instruction') }} 🎯</div>
+    <div class="foods-grid">
+      <div 
+        *ngFor="let food of currentFoods" 
+        class="food-card"
+        [@foodAnimation]="selectedFood === food.name ? 'selected' : 'normal'"
+        (click)="selectFood(food)"
+        [class.healthy]="food.healthy"
+        [class.unhealthy]="!food.healthy"
+        [class.disabled]="selectedFood !== null">
+        <div class="food-icon">{{ food.icon }}</div>
+        <div class="food-name">{{ food.name }}</div>
+      </div>
+    </div>
+    <div class="message" *ngIf="message" [@scoreAnimation]>{{ message }}</div>
+  </div>
+
+  <div class="game-content" *ngIf="gameOver">
+    <div class="game-over-screen">
+      <h2>{{ translate('game.over') }}! 😢</h2>
+      <p>{{ translate('game.finalScore') }}: <span class="final-score">{{ score }}</span></p>
+      <p>{{ translate('game.levelReached') }}: <span class="final-level">{{ level }}</span></p>
+      <div class="game-over-buttons">
+        <button class="restart-button" (click)="restart()">{{ translate('game.restart') }}</button>
+        <button class="home-button-large" (click)="goHome()">{{ translate('game.back') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

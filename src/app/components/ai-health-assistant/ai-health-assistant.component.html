@@ -1,0 +1,136 @@
+<div class="ai-assistant-container">
+  <div class="assistant-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🤖 {{ translate('ai.title') }}</h1>
+    <div class="bot-icon">🤖✨</div>
+  </div>
+
+  <!-- Form Step -->
+  <div class="assistant-content" *ngIf="step === 'form'" [@fadeIn]>
+    <div class="welcome-section">
+      <div class="bot-avatar">🤖</div>
+      <h2>{{ translate('ai.welcome') }}</h2>
+      <p>{{ translate('ai.description') }}</p>
+    </div>
+
+    <form class="health-form" (ngSubmit)="onSubmit()" #healthForm="ngForm">
+      <div class="form-group">
+        <label for="age">
+          <span class="label-icon">👶</span>
+          {{ translate('ai.form.age') }}
+        </label>
+        <input
+          type="number"
+          id="age"
+          name="age"
+          [(ngModel)]="healthData.age"
+          required
+          min="5"
+          max="12"
+          [placeholder]="translate('ai.form.agePlaceholder')"
+          class="form-input"
+        />
+        <span class="input-hint">{{ translate('ai.form.ageHint') }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="height">
+          <span class="label-icon">📏</span>
+          {{ translate('ai.form.height') }}
+        </label>
+        <input
+          type="number"
+          id="height"
+          name="height"
+          [(ngModel)]="healthData.height"
+          required
+          min="80"
+          max="180"
+          [placeholder]="translate('ai.form.heightPlaceholder')"
+          class="form-input"
+        />
+        <span class="input-hint">{{ translate('ai.form.heightHint') }}</span>
+      </div>
+
+      <div class="form-group">
+        <label for="weight">
+          <span class="label-icon">⚖️</span>
+          {{ translate('ai.form.weight') }}
+        </label>
+        <input
+          type="number"
+          id="weight"
+          name="weight"
+          [(ngModel)]="healthData.weight"
+          required
+          min="15"
+          max="100"
+          step="0.1"
+          [placeholder]="translate('ai.form.weightPlaceholder')"
+          class="form-input"
+        />
+        <span class="input-hint">{{ translate('ai.form.weightHint') }}</span>
+      </div>
+
+      <button type="submit" class="submit-button" [disabled]="!healthForm.valid">
+        {{ translate('ai.form.submit') }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Results Step -->
+  <div class="assistant-content results" *ngIf="step === 'results'" [@fadeIn]>
+    <div class="results-header">
+      <div class="bot-avatar-large">🤖</div>
+      <h2>{{ translate('ai.results.title') }}</h2>
+    </div>
+
+    <div class="results-summary">
+      <div class="summary-card" [@slideIn]>
+        <div class="card-icon">📊</div>
+        <h3>{{ translate('ai.results.currentBMI') }}</h3>
+        <div class="bmi-value">{{ currentBMI.toFixed(1) }}</div>
+        <p class="bmi-status" [class.healthy]="currentBMI >= 18.5 && currentBMI <= 24.9">
+          {{ getBMICategory(currentBMI) }}
+        </p>
+      </div>
+
+      <div class="summary-card" [@slideIn]>
+        <div class="card-icon">🎯</div>
+        <h3>{{ translate('ai.results.idealWeight') }}</h3>
+        <div class="weight-value">{{ idealWeight.toFixed(1) }} kg</div>
+        <p class="weight-diff" [class.positive]="weightDifference > 0" [class.negative]="weightDifference < 0">
+          {{ weightDifference > 0 ? translate('ai.results.toLose') : translate('ai.results.toGain') }}: 
+          {{ getAbsWeightDifference() }} kg
+        </p>
+      </div>
+    </div>
+
+    <div class="programs-section">
+      <div class="program-card exercise" [@slideIn]>
+        <div class="program-header">
+          <span class="program-icon">🏃</span>
+          <h3>{{ exerciseProgram.title }}</h3>
+        </div>
+        <ul class="program-list">
+          <li *ngFor="let item of exerciseProgram.items">{{ item }}</li>
+        </ul>
+      </div>
+
+      <div class="program-card nutrition" [@slideIn]>
+        <div class="program-header">
+          <span class="program-icon">🍎</span>
+          <h3>{{ nutritionProgram.title }}</h3>
+        </div>
+        <ul class="program-list">
+          <li *ngFor="let item of nutritionProgram.items">{{ item }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="reset-button" (click)="reset()">{{ translate('ai.results.reset') }}</button>
+      <button class="home-button-large" (click)="goHome()">{{ translate('ai.results.home') }}</button>
+    </div>
+  </div>
+</div>
