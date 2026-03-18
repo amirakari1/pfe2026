@@ -1,0 +1,78 @@
+.game-container {
+  min-height: 100vh;
+  background: var(--gradient-hero);
+  padding: 24px;
+}
+
+.game-header {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-button {
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.game-header h1 { color: white; font-size: 2rem; margin: 0; }
+.stat { color: white; font-weight: 600; }
+.game-content { max-width: 900px; margin: 0 auto; }
+
+.welcome-screen, .play-screen {
+  background: var(--bg-surface);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-hover);
+}
+
+.scene {
+  position: relative;
+  min-height: 300px;
+  background: var(--bg-light);
+  border-radius: 16px;
+  margin: 24px 0;
+}
+
+.breakfast-scene {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 40px;
+  font-size: 4rem;
+}
+
+.mistake-hotspot {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #EF4444;
+  color: white;
+  border: 3px solid white;
+  cursor: pointer;
+  font-weight: 700;
+  transform: translate(-50%, -50%);
+}
+
+.mistake-hotspot.found {
+  background: #10B981;
+}
+
+.start-button, .home-button-large {
+  padding: 14px 32px;
+  margin: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--gradient-primary);
+  color: white;
+}

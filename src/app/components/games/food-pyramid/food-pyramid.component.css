@@ -1,0 +1,90 @@
+.game-container {
+  min-height: 100vh;
+  background: var(--gradient-hero);
+  padding: 24px;
+}
+
+.game-header {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-button {
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.game-header h1 { color: white; font-size: 2rem; margin: 0; }
+.game-content { max-width: 900px; margin: 0 auto; }
+
+.welcome-screen, .play-screen {
+  background: var(--bg-surface);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-hover);
+}
+
+.pyramid-zones {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.zone {
+  min-height: 80px;
+  padding: 20px;
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-light);
+}
+
+.zone-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 40px;
+}
+
+.placed-food {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.foods-to-place {
+  margin-top: 24px;
+}
+
+.food-chip {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 4px;
+  background: var(--bg-surface);
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  cursor: grab;
+}
+
+.food-chip.placed { opacity: 0.5; }
+
+.start-button, .home-button-large {
+  padding: 14px 32px;
+  margin: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--gradient-primary);
+  color: white;
+}

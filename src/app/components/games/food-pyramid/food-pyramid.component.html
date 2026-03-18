@@ -1,0 +1,41 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🧩 {{ translate('game.pyramid.title') }}</h1>
+  </div>
+
+  <div class="game-content">
+    <div class="welcome-screen" *ngIf="!gameStarted">
+      <h2>{{ translate('game.pyramid.welcome') }}</h2>
+      <p>{{ translate('game.pyramid.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+
+    <div class="play-screen" *ngIf="gameStarted">
+      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
+      <div class="pyramid-zones">
+        <div *ngFor="let level of levels" class="zone" (dragover)="$event.preventDefault()" (drop)="onDrop($event, level.id)">
+          <h4>{{ level.icon }} {{ translate(level.label) }}</h4>
+          <div class="zone-content">
+            <div *ngFor="let food of getPlacedInZone(level.id)" class="placed-food" (click)="removePlacement(food.id)">
+              {{ food.icon }} {{ translate(food.nameKey) }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="foods-to-place">
+        <h4>{{ translate('game.pyramid.drag') }}</h4>
+        <div *ngFor="let food of foods" class="food-chip" [class.placed]="isPlaced(food.id)"
+          draggable="true"
+          (dragstart)="$event.dataTransfer?.setData('food', food.id)">
+          {{ food.icon }} {{ translate(food.nameKey) }}
+        </div>
+      </div>
+      <div class="result" *ngIf="gameComplete">
+        <p>{{ translate('game.pyramid.complete') }} {{ correctCount }}/{{ foods.length }}</p>
+        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

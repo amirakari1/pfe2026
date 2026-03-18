@@ -1,0 +1,36 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🧃 {{ translate('game.drink.title') }}</h1>
+  </div>
+
+  <div class="game-content">
+    <div class="welcome-screen" *ngIf="!gameStarted">
+      <h2>{{ translate('game.drink.welcome') }}</h2>
+      <p>{{ translate('game.drink.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+
+    <div class="play-screen" *ngIf="gameStarted">
+      <p class="instruction">{{ translate('game.drink.instruction') }}</p>
+      <div class="ingredients-grid">
+        <button *ngFor="let ing of ingredients" class="ingredient-btn"
+          [class.selected]="isSelected(ing)"
+          [class.unhealthy]="!ing.healthy"
+          (click)="toggleIngredient(ing)">
+          <span class="ing-icon">{{ ing.icon }}</span>
+          <span class="ing-name">{{ translate(ing.nameKey) }}</span>
+        </button>
+      </div>
+      <button class="submit-button" (click)="submitDrink()" [disabled]="submitted || selectedIngredients.length === 0">
+        {{ translate('game.drink.submit') }}
+      </button>
+      <div class="result" *ngIf="submitted">
+        <p class="stars">{{ getStars() }}</p>
+        <p class="message">{{ message }}</p>
+        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

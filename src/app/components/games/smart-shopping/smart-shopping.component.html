@@ -1,0 +1,46 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🛍️ {{ translate('game.shopping.title') }}</h1>
+    <div class="stat" *ngIf="gameStarted">{{ translate('game.shopping.budget') }}: {{ remainingPoints }}/{{ budget }}</div>
+  </div>
+
+  <div class="game-content">
+    <div class="welcome-screen" *ngIf="!gameStarted">
+      <h2>{{ translate('game.shopping.welcome') }}</h2>
+      <p>{{ translate('game.shopping.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+
+    <div class="play-screen" *ngIf="gameStarted">
+      <div class="foods-section">
+        <h3>{{ translate('game.shopping.foods') }}</h3>
+        <div class="foods-grid">
+          <div *ngFor="let food of foods" class="food-item" (click)="addToCart(food)">
+            <span class="food-icon">{{ food.icon }}</span>
+            <span class="food-name">{{ translate(food.nameKey) }}</span>
+            <span class="food-points">{{ food.points }} {{ translate('game.shopping.pts') }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="cart-section">
+        <h3>{{ translate('game.shopping.cart') }}</h3>
+        <div class="cart-items">
+          <div *ngFor="let item of cart" class="cart-item" (click)="removeFromCart(item)">
+            {{ item.icon }} {{ translate(item.nameKey) }} ({{ item.points }})
+          </div>
+        </div>
+        <p class="cart-total">{{ translate('game.shopping.total') }}: {{ totalPoints }} {{ translate('game.shopping.points') }}</p>
+        <button class="submit-button" (click)="submitMeal()" [disabled]="submitted || cart.length === 0">
+          {{ translate('game.shopping.submit') }}
+        </button>
+      </div>
+      <div class="result" *ngIf="submitted">
+        <p class="stars">{{ getStars() }}</p>
+        <p class="message">{{ message }}</p>
+        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

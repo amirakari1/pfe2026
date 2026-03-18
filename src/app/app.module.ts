@@ -7,14 +7,16 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
-import { HealthyFoodAdventureComponent } from './components/games/healthy-food-adventure/healthy-food-adventure.component';
-import { ExerciseQuestComponent } from './components/games/exercise-quest/exercise-quest.component';
-import { PortionControlPuzzleComponent } from './components/games/portion-control-puzzle/portion-control-puzzle.component';
-import { WaterHeroChallengeComponent } from './components/games/water-hero-challenge/water-hero-challenge.component';
-import { SleepTimeStoriesComponent } from './components/games/sleep-time-stories/sleep-time-stories.component';
-import { GardenGrowerComponent } from './components/games/garden-grower/garden-grower.component';
-import { ActivePlaygroundComponent } from './components/games/active-playground/active-playground.component';
-import { MealPlannerMasterComponent } from './components/games/meal-planner-master/meal-planner-master.component';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
+import { SugarCubesComponent } from './components/games/sugar-cubes/sugar-cubes.component';
+import { TrueFalseComponent } from './components/games/true-false/true-false.component';
+import { FoodMemoryComponent } from './components/games/food-memory/food-memory.component';
+import { MakeDrinkComponent } from './components/games/make-drink/make-drink.component';
+import { SmartShoppingComponent } from './components/games/smart-shopping/smart-shopping.component';
+import { FoodPyramidComponent } from './components/games/food-pyramid/food-pyramid.component';
+import { FutureChefComponent } from './components/games/future-chef/future-chef.component';
+import { HabitBalanceComponent } from './components/games/habit-balance/habit-balance.component';
+import { FindMistakeComponent } from './components/games/find-mistake/find-mistake.component';
 import { AiHealthAssistantComponent } from './components/ai-health-assistant/ai-health-assistant.component';
 
 @NgModule({
@@ -22,14 +24,16 @@ import { AiHealthAssistantComponent } from './components/ai-health-assistant/ai-
     AppComponent,
     HomeComponent,
     LanguageSwitcherComponent,
-    HealthyFoodAdventureComponent,
-    ExerciseQuestComponent,
-    PortionControlPuzzleComponent,
-    WaterHeroChallengeComponent,
-    SleepTimeStoriesComponent,
-    GardenGrowerComponent,
-    ActivePlaygroundComponent,
-    MealPlannerMasterComponent,
+    ThemeToggleComponent,
+    SugarCubesComponent,
+    TrueFalseComponent,
+    FoodMemoryComponent,
+    MakeDrinkComponent,
+    SmartShoppingComponent,
+    FoodPyramidComponent,
+    FutureChefComponent,
+    HabitBalanceComponent,
+    FindMistakeComponent,
     AiHealthAssistantComponent
   ],
   imports: [

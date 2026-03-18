@@ -1,0 +1,44 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>👨‍🍳 {{ translate('game.chef.title') }}</h1>
+  </div>
+
+  <div class="game-content">
+    <div class="welcome-screen" *ngIf="!gameStarted">
+      <h2>{{ translate('game.chef.welcome') }}</h2>
+      <p>{{ translate('game.chef.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+
+    <div class="play-screen" *ngIf="gameStarted">
+      <p class="instruction">{{ translate('game.chef.instruction') }}</p>
+      <div class="ingredients-grid">
+        <button *ngFor="let ing of ingredients" class="ingredient-btn"
+          [class.selected]="isSelected(ing)"
+          (click)="toggleIngredient(ing)">
+          {{ ing.icon }} {{ translate(ing.nameKey) }}
+        </button>
+      </div>
+      <div class="cooking-method">
+        <h4>{{ translate('game.chef.method') }}</h4>
+        <div class="method-btns">
+          <button *ngFor="let m of methods" class="method-btn"
+            [class.selected]="cookingMethod === m.id"
+            (click)="cookingMethod = m.id">
+            {{ translate(m.name) }}
+          </button>
+        </div>
+      </div>
+      <button class="submit-button" (click)="submitMeal()" [disabled]="submitted || selectedIngredients.length === 0">
+        {{ translate('game.chef.submit') }}
+      </button>
+      <div class="result" *ngIf="submitted">
+        <p class="stars">{{ getStars() }}</p>
+        <p class="message">{{ message }}</p>
+        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

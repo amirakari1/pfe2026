@@ -1,0 +1,34 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🧠 {{ translate('game.tf.title') }}</h1>
+    <div class="stat">{{ translate('game.score') }}: {{ score }}</div>
+  </div>
+
+  <div class="game-content">
+    <div class="welcome-screen" *ngIf="!gameStarted">
+      <h2>{{ translate('game.tf.welcome') }}</h2>
+      <p>{{ translate('game.tf.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+
+    <div class="play-screen" *ngIf="gameStarted && currentQuestion && !gameOver">
+      <p class="question-text">{{ translate(currentQuestion.text) }}</p>
+      <div class="buttons" *ngIf="!showFeedback">
+        <button class="answer-btn true-btn" (click)="answerQuestion(true)">{{ translate('game.tf.true') }}</button>
+        <button class="answer-btn false-btn" (click)="answerQuestion(false)">{{ translate('game.tf.false') }}</button>
+      </div>
+      <div class="feedback" *ngIf="showFeedback">
+        <p>{{ feedback }}</p>
+        <button class="next-button" (click)="nextQuestion()">{{ translate('game.tf.next') }}</button>
+      </div>
+    </div>
+
+    <div class="game-over-screen" *ngIf="gameStarted && gameOver">
+      <h2>{{ translate('game.over') }}</h2>
+      <p class="final-score">{{ translate('game.finalScore') }}: {{ score }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+      <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+    </div>
+  </div>
+</div>

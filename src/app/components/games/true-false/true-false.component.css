@@ -1,0 +1,65 @@
+.game-container {
+  min-height: 100vh;
+  background: var(--gradient-hero);
+  padding: 24px;
+}
+
+.game-header {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-button {
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.game-header h1 { color: white; font-size: 2rem; margin: 0; }
+.stat { color: white; font-weight: 600; }
+
+.game-content { max-width: 900px; margin: 0 auto; }
+
+.welcome-screen, .play-screen, .game-over-screen {
+  background: var(--bg-surface);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-hover);
+  text-align: center;
+}
+
+.question-text { font-size: 1.5rem; font-weight: 600; margin: 30px 0; color: var(--text-dark); }
+
+.buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 30px 0; }
+
+.answer-btn {
+  padding: 20px 50px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 16px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.true-btn { background: #10B981; color: white; }
+.false-btn { background: #EF4444; color: white; }
+.answer-btn:hover { transform: scale(1.05); }
+
+.start-button, .next-button, .home-button-large {
+  padding: 14px 32px;
+  margin: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--gradient-primary);
+  color: white;
+}

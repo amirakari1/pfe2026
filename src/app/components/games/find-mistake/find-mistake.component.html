@@ -1,0 +1,45 @@
+<div class="game-container">
+  <div class="game-header">
+    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🕵️ {{ translate('game.mistake.title') }}</h1>
+    <div class="stat" *ngIf="gameStarted">{{ translate('game.mistake.found') }}: {{ foundCount }}/{{ mistakes.length }}</div>
+  </div>
+
+  <div class="game-content">
+    <div class="welcome-screen" *ngIf="!gameStarted">
+      <h2>{{ translate('game.mistake.welcome') }}</h2>
+      <p>{{ translate('game.mistake.description') }}</p>
+      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+    </div>
+
+    <div class="play-screen" *ngIf="gameStarted">
+      <p class="instruction">{{ translate('game.mistake.instruction') }}</p>
+      <div class="scene" #scene>
+        <div class="scene-content">
+          <div class="breakfast-scene">
+            <span class="scene-emoji">🍳</span>
+            <span class="scene-emoji">🥤</span>
+            <span class="scene-emoji">🍞</span>
+          </div>
+        </div>
+        <button *ngFor="let m of mistakes" class="mistake-hotspot"
+          [style.left.%]="m.x"
+          [style.top.%]="m.y"
+          [class.found]="m.found"
+          (click)="findMistake(m)">
+          {{ m.found ? '✓' : '?' }}
+        </button>
+      </div>
+      <div class="feedback-list">
+        <ng-container *ngFor="let m of mistakes">
+          <p *ngIf="m.found" class="feedback-item">{{ translate(m.message) }}</p>
+        </ng-container>
+      </div>
+      <div class="result" *ngIf="allFound">
+        <p>🎉 {{ translate('game.mistake.allFound') }}</p>
+        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

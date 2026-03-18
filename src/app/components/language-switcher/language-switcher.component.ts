@@ -45,9 +45,9 @@ import { TranslationService } from '../../services/translation.service';
     }
 
     .lang-btn.active {
-      background: white;
-      color: #667eea;
-      border-color: white;
+      background: var(--header-active-bg);
+      color: var(--primary-color);
+      border-color: var(--header-active-bg);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 

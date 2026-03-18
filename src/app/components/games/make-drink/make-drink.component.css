@@ -1,0 +1,73 @@
+.game-container {
+  min-height: 100vh;
+  background: var(--gradient-hero);
+  padding: 24px;
+}
+
+.game-header {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-button {
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.game-header h1 { color: white; font-size: 2rem; margin: 0; }
+.game-content { max-width: 900px; margin: 0 auto; }
+
+.welcome-screen, .play-screen {
+  background: var(--bg-surface);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-hover);
+  text-align: center;
+}
+
+.ingredients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.ingredient-btn {
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-surface);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.ingredient-btn.selected { border-color: var(--primary-color); background: rgba(13, 148, 136, 0.1); }
+.ingredient-btn.unhealthy { border-color: #EF4444; }
+.ing-icon { font-size: 2rem; }
+.ing-name { font-size: 0.9rem; font-weight: 600; }
+
+.submit-button, .start-button, .home-button-large {
+  padding: 14px 32px;
+  margin: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--gradient-primary);
+  color: white;
+}
+
+.submit-button:disabled { opacity: 0.5; cursor: not-allowed; }
