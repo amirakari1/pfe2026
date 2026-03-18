@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     {
       name: 'Nour Imen Bahri',
       photo: 'assets/images/nour.jpg',
-      email: 'student2@university.edu',
+      email: 'nour.bahri2@gmail.com',
       phone: '568 274 29',
       address: 'El Jem, Mahdia, Tunisie'
     }
