@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
-
-interface Drink {
-  id: string;
-  nameKey: string;
-  icon: string;
-  cubes: number;
-}
+import { DRINKS_DATASET, DrinkEntry } from '../../../data/drinks.dataset';
 
 @Component({
   selector: 'app-sugar-cubes',
@@ -17,19 +11,14 @@ interface Drink {
 export class SugarCubesComponent {
   gameStarted = false;
   answered = false;
-  currentDrink: Drink | null = null;
+  currentDrink: DrinkEntry | null = null;
   userAnswer = 0;
   stars = 0;
   message = '';
   alternativeMessage = '';
 
-  drinks: Drink[] = [
-    { id: 'cola', nameKey: 'game.sugar.drink.cola', icon: '🥤', cubes: 8 },
-    { id: 'juice', nameKey: 'game.sugar.drink.juice', icon: '🧃', cubes: 6 },
-    { id: 'energy', nameKey: 'game.sugar.drink.energy', icon: '⚡', cubes: 10 },
-    { id: 'smoothie', nameKey: 'game.sugar.drink.smoothie', icon: '🥤', cubes: 7 },
-    { id: 'soda', nameKey: 'game.sugar.drink.soda', icon: '🍋', cubes: 9 }
-  ];
+  readonly drinks = DRINKS_DATASET;
+  readonly maxCubes = 15;
 
   constructor(
     private router: Router,
@@ -46,9 +35,14 @@ export class SugarCubesComponent {
     this.pickRandomDrink();
   }
 
+  private lastDrinkId: string | null = null;
+
   pickRandomDrink(): void {
-    const random = this.drinks[Math.floor(Math.random() * this.drinks.length)];
+    const available = this.drinks.filter(d => d.id !== this.lastDrinkId);
+    const pool = available.length > 0 ? available : this.drinks;
+    const random = pool[Math.floor(Math.random() * pool.length)];
     this.currentDrink = { ...random };
+    this.lastDrinkId = random.id;
     this.userAnswer = 0;
     this.message = '';
     this.alternativeMessage = '';
@@ -68,7 +62,7 @@ export class SugarCubesComponent {
       this.stars = 0;
       this.message = this.translate('game.sugar.tooFar');
     }
-    this.alternativeMessage = this.translate('game.sugar.alternative');
+    this.alternativeMessage = this.translate(this.currentDrink.altKey);
   }
 
   nextDrink(): void {
@@ -86,5 +80,10 @@ export class SugarCubesComponent {
 
   goHome(): void {
     this.router.navigate(['/']);
+  }
+
+  onImageError(e: Event): void {
+    const img = e.target as HTMLImageElement;
+    if (img) img.src = 'https://via.placeholder.com/300x300/0D9488/ffffff?text=Drink';
   }
 }

@@ -8,29 +8,35 @@
     <div class="welcome-screen" *ngIf="!gameStarted">
       <h2>{{ translate('game.sugar.welcome') }}</h2>
       <p>{{ translate('game.sugar.description') }}</p>
+      <p class="dataset-info">{{ drinks.length }} {{ translate('game.sugar.drinksInDataset') }}</p>
       <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
     </div>
 
     <div class="play-screen" *ngIf="gameStarted && currentDrink">
       <div class="drink-display" *ngIf="!answered">
-        <div class="drink-icon">{{ currentDrink.icon }}</div>
+        <div class="drink-image">
+          <img [src]="currentDrink.image" [alt]="translate(currentDrink.nameKey)" (error)="onImageError($event)">
+        </div>
         <h2>{{ translate(currentDrink.nameKey) }}</h2>
         <p class="instruction">{{ translate('game.sugar.guess') }}</p>
         <div class="slider-container">
-          <input type="range" min="0" max="15" [(ngModel)]="userAnswer" class="sugar-slider">
+          <input type="range" min="0" [max]="maxCubes" [(ngModel)]="userAnswer" class="sugar-slider">
           <span class="slider-value">{{ userAnswer }} {{ translate('game.sugar.cubes') }}</span>
         </div>
         <button class="submit-button" (click)="submitAnswer()">{{ translate('game.sugar.submit') }}</button>
       </div>
 
       <div class="result-screen" *ngIf="answered && currentDrink">
+        <div class="drink-image result">
+          <img [src]="currentDrink.image" [alt]="translate(currentDrink.nameKey)" (error)="onImageError($event)">
+        </div>
         <div class="stars">{{ getStars() }}</div>
         <p class="result-message">{{ message }}</p>
         <p class="cubes-reveal">😲 {{ translate('game.sugar.contains') }} {{ currentDrink.cubes }} {{ translate('game.sugar.cubes') }}!</p>
         <div class="cubes-visual">
           <span *ngFor="let c of getCubesArray()" class="cube">🧊</span>
         </div>
-        <p class="alternative">{{ alternativeMessage }} 🍓💧</p>
+        <p class="alternative">{{ alternativeMessage }}</p>
         <div class="result-buttons">
           <button class="next-button" (click)="nextDrink()">{{ translate('game.sugar.next') }}</button>
           <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
