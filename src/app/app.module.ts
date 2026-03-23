@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +41,7 @@ import { AiHealthAssistantComponent } from './components/ai-health-assistant/ai-
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    DragDropModule,
     AppRoutingModule
   ],
   providers: [],

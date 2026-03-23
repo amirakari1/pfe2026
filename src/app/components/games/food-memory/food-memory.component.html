@@ -14,9 +14,9 @@
 
     <div class="play-screen" *ngIf="gameStarted">
       <div class="cards-grid">
-        <div *ngFor="let card of cards" class="card" [class.flipped]="card.flipped" [class.matched]="card.matched">
+        <div *ngFor="let card of cards; let i = index" class="card" [class.flipped]="card.flipped" [class.matched]="card.matched">
           <div class="card-inner" (click)="flipCard(card)">
-            <div class="card-front">?</div>
+            <div class="card-front">{{ i + 1 }}</div>
             <div class="card-back">
               <span class="card-emoji">{{ card.emoji }}</span>
               <span class="card-fact">{{ translate(card.fact) }}</span>

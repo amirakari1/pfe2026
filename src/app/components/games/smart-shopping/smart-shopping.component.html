@@ -2,7 +2,12 @@
   <div class="game-header">
     <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
     <h1>🛍️ {{ translate('game.shopping.title') }}</h1>
-    <div class="stat" *ngIf="gameStarted">{{ translate('game.shopping.budget') }}: {{ remainingPoints }}/{{ budget }}</div>
+    <div class="budget-widget" *ngIf="gameStarted">
+      <div class="budget-bar">
+        <div class="budget-fill" [style.width.%]="budgetPercent"></div>
+      </div>
+      <span class="budget-text">{{ translate('game.shopping.budget') }}: {{ remainingPoints }}/{{ budget }} {{ translate('game.shopping.pts') }}</span>
+    </div>
   </div>
 
   <div class="game-content">
@@ -13,28 +18,47 @@
     </div>
 
     <div class="play-screen" *ngIf="gameStarted">
-      <div class="foods-section">
-        <h3>{{ translate('game.shopping.foods') }}</h3>
-        <div class="foods-grid">
-          <div *ngFor="let food of foods" class="food-item" (click)="addToCart(food)">
-            <span class="food-icon">{{ food.icon }}</span>
-            <span class="food-name">{{ translate(food.nameKey) }}</span>
-            <span class="food-points">{{ food.points }} {{ translate('game.shopping.pts') }}</span>
+      <div class="shopping-layout">
+        <!-- Store shelf -->
+        <div class="shelf-panel">
+          <h3 class="panel-title">{{ translate('game.shopping.foods') }}</h3>
+          <div class="shelf" cdkDropList cdkDropListId="foods-list" [cdkDropListData]="foods"
+            [cdkDropListConnectedTo]="connectedFoodLists" (cdkDropListDropped)="dropFood($event)">
+            <div *ngFor="let food of foods" class="food-card" cdkDrag>
+              <div class="food-card-inner" cdkDragHandle>
+                <span class="food-icon">{{ food.icon }}</span>
+                <span class="food-name">{{ translate(food.nameKey) }}</span>
+                <span class="food-points">{{ food.points }} {{ translate('game.shopping.pts') }}</span>
+              </div>
+              <button type="button" class="add-btn" (click)="addToCart(food); $event.stopPropagation()">+</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="cart-section">
-        <h3>{{ translate('game.shopping.cart') }}</h3>
-        <div class="cart-items">
-          <div *ngFor="let item of cart" class="cart-item" (click)="removeFromCart(item)">
-            {{ item.icon }} {{ translate(item.nameKey) }} ({{ item.points }})
+
+        <!-- Cart / Basket -->
+        <div class="basket-panel">
+          <h3 class="panel-title">🛒 {{ translate('game.shopping.cart') }}</h3>
+          <div class="basket" cdkDropList cdkDropListId="cart-list" [cdkDropListData]="cart"
+            [cdkDropListConnectedTo]="connectedCartLists" (cdkDropListDropped)="dropFood($event)">
+            <div *ngFor="let item of cart" class="cart-card" cdkDrag>
+              <span class="cart-icon">{{ item.icon }}</span>
+              <span class="cart-name">{{ translate(item.nameKey) }}</span>
+              <span class="cart-points">{{ item.points }}</span>
+              <button type="button" class="remove-btn" (click)="removeFromCart(item); $event.stopPropagation()">×</button>
+            </div>
+            <span class="drop-hint" *ngIf="cart.length === 0">{{ translate('game.shopping.dropHere') }}</span>
           </div>
-        </div>
-        <p class="cart-total">{{ translate('game.shopping.total') }}: {{ totalPoints }} {{ translate('game.shopping.points') }}</p>
-        <button class="submit-button" (click)="submitMeal()" [disabled]="submitted || cart.length === 0">
-          {{ translate('game.shopping.submit') }}
-        </button>
+          <div class="basket-footer">
+            <div class="cart-total">
+              <span style="color: black">{{ translate('game.shopping.total') }}:</span>
+              <strong style="color: black">{{ totalPoints }} {{ translate('game.shopping.pts') }}</strong>
+            </div>
+            <button class="submit-button" (click)="submitMeal()" [disabled]="submitted || cart.length === 0">
+              {{ translate('game.shopping.submit') }}
+            </button>
+          </div>
       </div>
+
       <div class="result" *ngIf="submitted">
         <p class="stars">{{ getStars() }}</p>
         <p class="message">{{ message }}</p>

@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
 
-interface FoodItem {
+export interface FoodItem {
   id: string;
   nameKey: string;
   icon: string;
   points: number;
   type: 'vegetable' | 'fruit' | 'protein' | 'carb' | 'sugar' | 'soda';
+  uid?: string;  // unique id for cart copies
 }
 
 @Component({
@@ -19,9 +21,13 @@ export class SmartShoppingComponent {
   gameStarted = false;
   budget = 20;
   cart: FoodItem[] = [];
+  removeZone: FoodItem[] = [];  // dummy list for drop zone
   submitted = false;
   stars = 0;
   message = '';
+
+  connectedFoodLists = ['cart-list'];
+  connectedCartLists = ['foods-list', 'remove-zone'];
 
   foods: FoodItem[] = [
     { id: 'carrot', nameKey: 'game.shopping.food.carrot', icon: '🥕', points: 3, type: 'vegetable' },
@@ -54,17 +60,35 @@ export class SmartShoppingComponent {
     this.message = '';
   }
 
+  dropFood(event: CdkDragDrop<FoodItem[]>): void {
+    if (this.submitted) return;
+
+    if (event.previousContainer.id === 'foods-list' && event.container.id === 'cart-list') {
+      const item = event.previousContainer.data[event.previousIndex];
+      if (this.totalPoints + item.points <= this.budget) {
+        const copy: FoodItem = { ...item, uid: `${item.id}-${Date.now()}` };
+        this.cart.push(copy);
+      }
+    } else if (event.previousContainer.id === 'cart-list' && event.container.id === 'remove-zone') {
+      const item = event.previousContainer.data[event.previousIndex];
+      const idx = this.cart.findIndex(c => (c.uid && c.uid === item.uid) || c === item);
+      if (idx >= 0) this.cart.splice(idx, 1);
+    } else if (event.previousContainer.id === 'cart-list' && event.container.id === 'cart-list') {
+      moveItemInArray(this.cart, event.previousIndex, event.currentIndex);
+    }
+  }
+
   addToCart(item: FoodItem): void {
     if (this.submitted) return;
-    const total = this.cart.reduce((s, i) => s + i.points, 0);
-    if (total + item.points <= this.budget) {
-      this.cart.push(item);
+    if (this.totalPoints + item.points <= this.budget) {
+      const copy: FoodItem = { ...item, uid: `${item.id}-${Date.now()}` };
+      this.cart.push(copy);
     }
   }
 
   removeFromCart(item: FoodItem): void {
     if (this.submitted) return;
-    const idx = this.cart.indexOf(item);
+    const idx = this.cart.findIndex(c => c.uid === item.uid || c === item);
     if (idx >= 0) this.cart.splice(idx, 1);
   }
 
@@ -74,6 +98,10 @@ export class SmartShoppingComponent {
 
   get remainingPoints(): number {
     return this.budget - this.totalPoints;
+  }
+
+  get budgetPercent(): number {
+    return Math.min(100, (this.totalPoints / this.budget) * 100);
   }
 
   getStars(): string {

@@ -58,7 +58,8 @@
 }
 
 .card.flipped .card-inner { transform: rotateY(180deg); }
-.card.matched .card-inner { opacity: 0.7; }
+.card.matched .card-inner { transform: rotateY(180deg); }
+.card.matched { pointer-events: none; }
 
 .card-front, .card-back {
   position: absolute;

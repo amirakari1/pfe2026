@@ -84,6 +84,6 @@ export class SugarCubesComponent {
 
   onImageError(e: Event): void {
     const img = e.target as HTMLImageElement;
-    if (img) img.src = 'https://via.placeholder.com/300x300/0D9488/ffffff?text=Drink';
+    if (img) img.src = 'https://via.placeholder.com/300x300/0D9488/ffffff?text=?';
   }
 }

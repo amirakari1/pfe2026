@@ -2,6 +2,11 @@
   <div class="game-header">
     <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
     <h1>🧃 {{ translate('game.drink.title') }}</h1>
+    <div class="step-indicator" *ngIf="gameStarted">
+      <span [class.active]="currentStep === 'base'">1</span>
+      <span [class.active]="currentStep === 'ingredients' || currentStep === 'result'">2</span>
+      <span [class.active]="currentStep === 'result'">3</span>
+    </div>
   </div>
 
   <div class="game-content">
@@ -12,24 +17,130 @@
     </div>
 
     <div class="play-screen" *ngIf="gameStarted">
-      <p class="instruction">{{ translate('game.drink.instruction') }}</p>
-      <div class="ingredients-grid">
-        <button *ngFor="let ing of ingredients" class="ingredient-btn"
-          [class.selected]="isSelected(ing)"
-          [class.unhealthy]="!ing.healthy"
-          (click)="toggleIngredient(ing)">
-          <span class="ing-icon">{{ ing.icon }}</span>
-          <span class="ing-name">{{ translate(ing.nameKey) }}</span>
+      <!-- Step 1: Choose Base -->
+      <div class="step-panel" *ngIf="currentStep === 'base'">
+        <h3>{{ translate('game.drink.step.base') }}</h3>
+        <div class="bases-grid">
+          <div *ngFor="let base of bases" class="base-card"
+            [class.selected]="selectedBase?.id === base.id"
+            (click)="selectBase(base)">
+            <span class="base-icon">{{ base.icon }}</span>
+            <span class="base-name">{{ translate(base.nameKey) }}</span>
+          </div>
+        </div>
+        <button class="next-button" [disabled]="!selectedBase" (click)="nextToIngredients()">
+          {{ translate('game.drink.next') }}
         </button>
       </div>
-      <button class="submit-button" (click)="submitDrink()" [disabled]="submitted || selectedIngredients.length === 0">
-        {{ translate('game.drink.submit') }}
-      </button>
-      <div class="result" *ngIf="submitted">
-        <p class="stars">{{ getStars() }}</p>
-        <p class="message">{{ message }}</p>
-        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
-        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+
+      <!-- Step 2: Drag Ingredients + Blend -->
+      <div class="step-panel" *ngIf="currentStep === 'ingredients'">
+        <h3>{{ translate('game.drink.step.ingredients') }}</h3>
+        <p class="hint">{{ translate('game.drink.dragHint') }}</p>
+
+        <div class="builder-layout">
+          <div class="ingredients-panel" cdkDropList cdkDropListId="ingredients-list" [cdkDropListData]="availableIngredients"
+            [cdkDropListConnectedTo]="connectedIngredientsLists" (cdkDropListDropped)="dropIngredient($event)">
+            <div *ngFor="let ing of availableIngredients" class="ingredient-chip" cdkDrag>
+              <span class="chip-drag" cdkDragHandle>
+                <span class="chip-icon">{{ ing.icon }}</span>
+                <span class="chip-name">{{ translate(ing.nameKey) }}</span>
+              </span>
+              <button type="button" class="add-btn" (click)="addToBlender(ing); $event.stopPropagation()" title="Add">+</button>
+            </div>
+          </div>
+
+          <div class="blender-zone" cdkDropList cdkDropListId="blender-list" [cdkDropListData]="blenderIngredients"
+            [cdkDropListConnectedTo]="connectedBlenderLists" (cdkDropListDropped)="dropIngredient($event)"
+            [class.blending]="blending">
+            <div class="blender-drop-area">
+              <span class="drop-hint" *ngIf="blenderIngredients.length === 0">{{ translate('game.drink.dropHere') }}</span>
+              <div class="blender-body">
+                <div class="blender-jar" [style.background]="selectedBase?.color">
+                  <div *ngFor="let ing of blenderIngredients" class="blender-ing" (click)="removeFromBlender(ing)">
+                    {{ ing.icon }}
+                  </div>
+                  <div class="blender-spinner" *ngIf="blending"></div>
+                </div>
+                <div class="blender-base"></div>
+              </div>
+            </div>
+            <div class="blend-progress" *ngIf="blending">
+              <div class="progress-bar" [style.width.%]="blendProgress"></div>
+            </div>
+            <button class="blend-button" [disabled]="blenderIngredients.length === 0 || blending"
+              (click)="startBlend()">
+              {{ blending ? '...' : '⚡ ' + translate('game.drink.blend') }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Result -->
+      <div class="step-panel result-panel" *ngIf="currentStep === 'result' && resultShown">
+        <h3>🍹 {{ drinkName }}</h3>
+
+        <div class="result-layout">
+          <div class="glass-display">
+            <div class="glass" [style.--drink-color]="drinkColor">
+              <div class="liquid"></div>
+            </div>
+          </div>
+
+          <div class="nutrition-panel">
+            <div class="nutrition-card">
+              <h4>{{ translate('game.drink.nutrition') }}</h4>
+              <div class="nutrient">
+                <span>{{ translate('game.drink.calories') }}</span>
+                <div class="progress-row">
+                  <div class="progress-track">
+                    <div class="progress-fill calories" [style.width.%]="Math.min(nutrition.calories / 2, 100) || 0"></div>
+                  </div>
+                  <span>{{ nutrition.calories }} kcal</span>
+                </div>
+              </div>
+              <div class="nutrient">
+                <span>{{ translate('game.drink.sugar') }}</span>
+                <div class="progress-row">
+                  <div class="progress-track">
+                    <div class="progress-fill sugar" [style.width.%]="Math.min(nutrition.sugar * 4, 100)"></div>
+                  </div>
+                  <span>{{ nutrition.sugar }}g</span>
+                </div>
+              </div>
+              <div class="nutrient">
+                <span>{{ translate('game.drink.vitamins') }}</span>
+                <div class="progress-row">
+                  <div class="progress-track">
+                    <div class="progress-fill vitamins" [style.width.%]="Math.min(nutrition.vitamins, 100)"></div>
+                  </div>
+                  <span>{{ nutrition.vitamins }}</span>
+                </div>
+              </div>
+              <div class="nutrient">
+                <span>{{ translate('game.drink.hydration') }}</span>
+                <div class="progress-row">
+                  <div class="progress-track">
+                    <div class="progress-fill hydration" [style.width.%]="nutrition.hydration"></div>
+                  </div>
+                  <span>{{ nutrition.hydration }}%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="health-score" [class.good]="healthScore >= 70" [class.moderate]="healthScore >= 40 && healthScore < 70" [class.low]="healthScore < 40">
+              <span class="score-label">{{ translate('game.drink.healthScore') }}</span>
+              <span class="score-value">{{ healthScore }}%</span>
+            </div>
+
+            <p class="recommendation">{{ recommendation }}</p>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button class="start-button" (click)="reset()">{{ translate('game.restart') }}</button>
+          <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+        </div>
       </div>
     </div>
   </div>
