@@ -1,0 +1,13 @@
+<ng-container *ngIf="state$ | async as s">
+  <div *ngIf="s.kind" class="gf-root" [class.gf-success]="s.kind === 'success'" [class.gf-fail]="s.kind === 'fail'" aria-live="polite">
+    <div class="gf-confetti" *ngIf="s.kind === 'success'">
+      <span *ngFor="let i of confettiPieces" class="gf-cf" [style.--d]="i.delay" [style.--x]="i.x" [style.--c]="i.color"></span>
+    </div>
+    <div class="gf-card" [class.gf-pop]="s.kind === 'success'" [class.gf-shake]="s.kind === 'fail'">
+      <div class="gf-emoji" *ngIf="s.kind === 'success'">🎉</div>
+      <div class="gf-emoji gf-emoji-fail" *ngIf="s.kind === 'fail'">😅</div>
+      <p class="gf-title">{{ s.kind === 'success' ? translate('game.feedback.celebrate') : translate('game.feedback.tryAgain') }}</p>
+      <p class="gf-sub">{{ s.kind === 'success' ? translate('game.feedback.greatJob') : translate('game.feedback.keepGoing') }}</p>
+    </div>
+  </div>
+</ng-container>
