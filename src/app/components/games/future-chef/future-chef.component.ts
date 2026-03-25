@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
+import { GameFeedbackService } from '../../../services/game-feedback.service';
 
-interface Ingredient {
+export interface ChefIngredient {
   id: string;
   nameKey: string;
   icon: string;
   type: 'carb' | 'protein' | 'vegetable' | 'unhealthy';
 }
+
+const PANTRY_ID = 'chef-pantry';
+const POT_ID = 'chef-pot';
 
 @Component({
   selector: 'app-future-chef',
@@ -16,13 +21,19 @@ interface Ingredient {
 })
 export class FutureChefComponent {
   gameStarted = false;
-  selectedIngredients: Ingredient[] = [];
+  pantry: ChefIngredient[] = [];
+  pot: ChefIngredient[] = [];
   cookingMethod = '';
+  combining = false;
   submitted = false;
   stars = 0;
   message = '';
+  dishDescription = '';
 
-  ingredients: Ingredient[] = [
+  readonly listIds = { pantry: PANTRY_ID, pot: POT_ID };
+  readonly connectedDropLists = [PANTRY_ID, POT_ID];
+
+  readonly ingredientsTemplate: ChefIngredient[] = [
     { id: 'rice', nameKey: 'game.chef.ing.rice', icon: '🍚', type: 'carb' },
     { id: 'bread', nameKey: 'game.chef.ing.bread', icon: '🍞', type: 'carb' },
     { id: 'fries', nameKey: 'game.chef.ing.fries', icon: '🍟', type: 'unhealthy' },
@@ -40,9 +51,12 @@ export class FutureChefComponent {
     { id: 'fried', name: 'game.chef.fried' }
   ];
 
+  private readonly combineMs = 2000;
+
   constructor(
     private router: Router,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private gameFeedback: GameFeedbackService
   ) {}
 
   translate(key: string): string {
@@ -51,32 +65,58 @@ export class FutureChefComponent {
 
   startGame(): void {
     this.gameStarted = true;
-    this.selectedIngredients = [];
+    this.pantry = this.ingredientsTemplate.map(i => ({ ...i }));
+    this.pot = [];
     this.cookingMethod = '';
+    this.combining = false;
     this.submitted = false;
     this.message = '';
+    this.dishDescription = '';
+    this.stars = 0;
   }
 
-  toggleIngredient(ing: Ingredient): void {
-    if (this.submitted) return;
-    const idx = this.selectedIngredients.findIndex(i => i.id === ing.id);
-    if (idx >= 0) {
-      this.selectedIngredients.splice(idx, 1);
-    } else {
-      this.selectedIngredients.push(ing);
+  drop(event: CdkDragDrop<ChefIngredient[]>): void {
+    if (this.submitted || this.combining) return;
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      return;
     }
+
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
-  isSelected(ing: Ingredient): boolean {
-    return this.selectedIngredients.some(i => i.id === ing.id);
+  cookMeal(): void {
+    if (this.pot.length === 0 || !this.cookingMethod || this.submitted || this.combining) return;
+
+    this.dishDescription = this.buildDishDescription();
+    this.combining = true;
+
+    window.setTimeout(() => {
+      this.combining = false;
+      this.finalizeMeal();
+    }, this.combineMs);
   }
 
-  submitMeal(): void {
+  private buildDishDescription(): string {
+    const parts = this.pot.map(i => this.translate(i.nameKey));
+    const methodEntry = this.methods.find(m => m.id === this.cookingMethod);
+    const methodLabel = methodEntry ? this.translate(methodEntry.name) : '';
+    const joined = parts.slice(0, 5).join(' + ');
+    return methodLabel ? `${joined} · ${methodLabel}` : joined;
+  }
+
+  private finalizeMeal(): void {
     this.submitted = true;
-    const hasCarb = this.selectedIngredients.some(i => i.type === 'carb');
-    const hasProtein = this.selectedIngredients.some(i => i.type === 'protein');
-    const hasVegetable = this.selectedIngredients.some(i => i.type === 'vegetable');
-    const hasUnhealthy = this.selectedIngredients.some(i => i.type === 'unhealthy');
+    const hasCarb = this.pot.some(i => i.type === 'carb');
+    const hasProtein = this.pot.some(i => i.type === 'protein');
+    const hasVegetable = this.pot.some(i => i.type === 'vegetable');
+    const hasUnhealthy = this.pot.some(i => i.type === 'unhealthy');
     const isFried = this.cookingMethod === 'fried';
 
     let score = 0;
@@ -89,12 +129,15 @@ export class FutureChefComponent {
     if (score >= 6) {
       this.stars = 5;
       this.message = this.translate('game.chef.perfect');
+      this.gameFeedback.celebrate();
     } else if (score >= 2) {
       this.stars = 3;
       this.message = this.translate('game.chef.good');
+      this.gameFeedback.celebrate();
     } else {
       this.stars = 2;
       this.message = this.translate('game.chef.poor');
+      this.gameFeedback.fail();
     }
   }
 

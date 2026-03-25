@@ -1,40 +1,85 @@
 <div class="game-container">
   <div class="game-header">
-    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
-    <h1>🧩 {{ translate('game.pyramid.title') }}</h1>
+    <button type="button" class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>{{ translate('game.pyramid.title') }}</h1>
   </div>
 
   <div class="game-content">
     <div class="welcome-screen" *ngIf="!gameStarted">
       <h2>{{ translate('game.pyramid.welcome') }}</h2>
       <p>{{ translate('game.pyramid.description') }}</p>
-      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+      <button type="button" class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
     </div>
 
-    <div class="play-screen" *ngIf="gameStarted">
-      <p class="feedback" *ngIf="feedback">{{ feedback }}</p>
-      <div class="pyramid-zones">
-        <div *ngFor="let level of levels" class="zone" (dragover)="$event.preventDefault()" (drop)="onDrop($event, level.id)">
-          <h4>{{ level.icon }} {{ translate(level.label) }}</h4>
-          <div class="zone-content">
-            <div *ngFor="let food of getPlacedInZone(level.id)" class="placed-food" (click)="removePlacement(food.id)">
-              {{ food.icon }} {{ translate(food.nameKey) }}
+    <div class="play-screen" *ngIf="gameStarted" cdkDropListGroup>
+      <p class="hint" *ngIf="hint">{{ hint }}</p>
+
+      <div class="pyramid-layout">
+        <div class="pyramid-column">
+          <p class="pyramid-legend">{{ translate('game.pyramid.legend') }}</p>
+          <div class="pyramid-visual">
+            <div *ngFor="let tier of levels" class="pyramid-tier"
+              [class.tier-sweets]="tier.id === 'sweets'"
+              [class.tier-fruits]="tier.id === 'fruits'"
+              [class.tier-carbs]="tier.id === 'carbs'"
+              cdkDropList
+              [id]="tier.listId"
+              [cdkDropListData]="getZoneForListId(tier.listId)"
+              [cdkDropListConnectedTo]="connectedLists"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="tier-label">
+                <span class="tier-name">{{ translate(tier.label) }}</span>
+                <span class="tier-hint">{{ translate(tier.short) }}</span>
+              </div>
+              <div class="tier-chips">
+                <div *ngFor="let food of getZoneForListId(tier.listId)" class="placed-chip" cdkDrag>
+                  <div class="chip-visual" *cdkDragPreview>
+                    <img *ngIf="!food.imgBroken" [src]="food.imageUrl" alt="" (error)="onImageError(food)" />
+                    <span *ngIf="food.imgBroken" class="chip-fallback">{{ food.icon }}</span>
+                  </div>
+                  <div class="chip-body" cdkDragHandle>
+                    <img *ngIf="!food.imgBroken" [src]="food.imageUrl" alt="" (error)="onImageError(food)" />
+                    <span *ngIf="food.imgBroken" class="chip-fallback">{{ food.icon }}</span>
+                    <span class="chip-caption">{{ translate(food.nameKey) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bank-column">
+          <h3 class="bank-title">{{ translate('game.pyramid.drag') }}</h3>
+          <p class="bank-hint">{{ translate('game.pyramid.dragHint') }}</p>
+          <div class="bank-panel"
+            cdkDropList
+            [id]="listIds.bank"
+            [cdkDropListData]="bank"
+            [cdkDropListConnectedTo]="connectedLists"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div *ngFor="let food of bank" class="food-chip" cdkDrag>
+              <div class="chip-visual" *cdkDragPreview>
+                <img *ngIf="!food.imgBroken" [src]="food.imageUrl" alt="" (error)="onImageError(food)" />
+                <span *ngIf="food.imgBroken" class="chip-fallback">{{ food.icon }}</span>
+              </div>
+              <div class="chip-body" cdkDragHandle>
+                <div class="thumb-wrap">
+                  <img *ngIf="!food.imgBroken" [src]="food.imageUrl" alt="" (error)="onImageError(food)" />
+                  <span *ngIf="food.imgBroken" class="chip-fallback lg">{{ food.icon }}</span>
+                </div>
+                <span class="chip-caption">{{ translate(food.nameKey) }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="foods-to-place">
-        <h4>{{ translate('game.pyramid.drag') }}</h4>
-        <div *ngFor="let food of foods" class="food-chip" [class.placed]="isPlaced(food.id)"
-          draggable="true"
-          (dragstart)="$event.dataTransfer?.setData('food', food.id)">
-          {{ food.icon }} {{ translate(food.nameKey) }}
-        </div>
-      </div>
+
       <div class="result" *ngIf="gameComplete">
-        <p>{{ translate('game.pyramid.complete') }} {{ correctCount }}/{{ foods.length }}</p>
-        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
-        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+        <p class="result-score">{{ translate('game.pyramid.complete') }} {{ correctPlacementCount }}/{{ foods.length }}</p>
+        <button type="button" class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
+        <button type="button" class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
       </div>
     </div>
   </div>

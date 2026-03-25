@@ -19,6 +19,7 @@ import { FutureChefComponent } from './components/games/future-chef/future-chef.
 import { HabitBalanceComponent } from './components/games/habit-balance/habit-balance.component';
 import { FindMistakeComponent } from './components/games/find-mistake/find-mistake.component';
 import { AiHealthAssistantComponent } from './components/ai-health-assistant/ai-health-assistant.component';
+import { GameFeedbackOverlayComponent } from './components/game-feedback-overlay/game-feedback-overlay.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AiHealthAssistantComponent } from './components/ai-health-assistant/ai-
     FutureChefComponent,
     HabitBalanceComponent,
     FindMistakeComponent,
-    AiHealthAssistantComponent
+    AiHealthAssistantComponent,
+    GameFeedbackOverlayComponent
   ],
   imports: [
     BrowserModule,

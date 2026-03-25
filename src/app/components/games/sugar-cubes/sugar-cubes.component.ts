@@ -10,6 +10,8 @@ import { DRINKS_DATASET, DrinkEntry } from '../../../data/drinks.dataset';
 })
 export class SugarCubesComponent {
   gameStarted = false;
+  sessionComplete = false;
+  currentIndex = 0;
   answered = false;
   currentDrink: DrinkEntry | null = null;
   userAnswer = 0;
@@ -31,21 +33,29 @@ export class SugarCubesComponent {
 
   startGame(): void {
     this.gameStarted = true;
+    this.sessionComplete = false;
+    this.currentIndex = 0;
     this.answered = false;
-    this.pickRandomDrink();
+    this.loadCurrentDrink();
   }
 
-  private lastDrinkId: string | null = null;
-
-  pickRandomDrink(): void {
-    const available = this.drinks.filter(d => d.id !== this.lastDrinkId);
-    const pool = available.length > 0 ? available : this.drinks;
-    const random = pool[Math.floor(Math.random() * pool.length)];
-    this.currentDrink = { ...random };
-    this.lastDrinkId = random.id;
+  private loadCurrentDrink(): void {
+    const d = this.drinks[this.currentIndex];
+    this.currentDrink = d ? { ...d } : null;
     this.userAnswer = 0;
     this.message = '';
     this.alternativeMessage = '';
+    this.stars = 0;
+  }
+
+  get isLastRound(): boolean {
+    return this.drinks.length > 0 && this.currentIndex >= this.drinks.length - 1;
+  }
+
+  get progressLabel(): string {
+    const n = this.drinks.length;
+    if (n === 0) return '';
+    return `${this.translate('game.sugar.progress')} ${this.currentIndex + 1} / ${n}`;
   }
 
   submitAnswer(): void {
@@ -66,8 +76,19 @@ export class SugarCubesComponent {
   }
 
   nextDrink(): void {
+    if (this.isLastRound) {
+      this.sessionComplete = true;
+      this.answered = false;
+      this.currentDrink = null;
+      return;
+    }
+    this.currentIndex++;
     this.answered = false;
-    this.pickRandomDrink();
+    this.loadCurrentDrink();
+  }
+
+  playAgain(): void {
+    this.startGame();
   }
 
   getStars(): string {

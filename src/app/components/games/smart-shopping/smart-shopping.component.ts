@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
+import { GameFeedbackService } from '../../../services/game-feedback.service';
 
 export interface FoodItem {
   id: string;
@@ -45,7 +46,8 @@ export class SmartShoppingComponent {
 
   constructor(
     private router: Router,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private gameFeedback: GameFeedbackService,
   ) {}
 
   translate(key: string): string {
@@ -119,15 +121,19 @@ export class SmartShoppingComponent {
     if (overBudget) {
       this.stars = 0;
       this.message = this.translate('game.shopping.overBudget');
+      this.gameFeedback.fail();
     } else if (hasSugar) {
       this.stars = 2;
       this.message = this.translate('game.shopping.tooMuchSugar');
+      this.gameFeedback.fail();
     } else if (hasVegetable && hasProtein && hasCarb) {
       this.stars = 5;
       this.message = this.translate('game.shopping.balanced');
+      this.gameFeedback.celebrate();
     } else {
       this.stars = 3;
       this.message = this.translate('game.shopping.incomplete');
+      this.gameFeedback.fail();
     }
   }
 

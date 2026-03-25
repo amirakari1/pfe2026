@@ -34,7 +34,7 @@
   margin: 0 auto;
 }
 
-.welcome-screen, .play-screen {
+.welcome-screen, .play-screen, .complete-screen {
   background: var(--bg-surface);
   padding: 40px;
   border-radius: 24px;
@@ -42,9 +42,24 @@
   text-align: center;
 }
 
-.welcome-screen h2, .play-screen h2 {
+.welcome-screen h2, .play-screen h2, .complete-screen h2 {
   color: var(--primary-color);
   margin-bottom: 16px;
+}
+
+.progress-tracker {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 0 20px;
+  font-size: 1.05rem;
+}
+
+.complete-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
 
 .dataset-info {

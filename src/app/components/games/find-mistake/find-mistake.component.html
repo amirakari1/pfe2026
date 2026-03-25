@@ -1,44 +1,114 @@
 <div class="game-container">
   <div class="game-header">
-    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
-    <h1>🕵️ {{ translate('game.mistake.title') }}</h1>
-    <div class="stat" *ngIf="gameStarted">{{ translate('game.mistake.found') }}: {{ foundCount }}/{{ mistakes.length }}</div>
+    <button type="button" class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <h1>🛒 {{ translate('game.mistake.title') }}</h1>
   </div>
 
   <div class="game-content">
     <div class="welcome-screen" *ngIf="!gameStarted">
       <h2>{{ translate('game.mistake.welcome') }}</h2>
       <p>{{ translate('game.mistake.description') }}</p>
-      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+      <button type="button" class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
     </div>
 
     <div class="play-screen" *ngIf="gameStarted">
       <p class="instruction">{{ translate('game.mistake.instruction') }}</p>
-      <div class="scene" #scene>
-        <div class="scene-content">
-          <div class="breakfast-scene">
-            <span class="scene-emoji">🍳</span>
-            <span class="scene-emoji">🥤</span>
-            <span class="scene-emoji">🍞</span>
+
+      <div
+        #marketBoard
+        class="market-board"
+        (mouseenter)="onBoardEnter()"
+        (mousemove)="onBoardMouseMove($event)"
+        (mouseleave)="onBoardLeave()"
+        (touchstart)="onBoardTouchStart($event)"
+        (touchmove)="onBoardTouchMove($event)"
+      >
+        <div class="market-scene">
+          <div class="scene-sky" aria-hidden="true"></div>
+
+          <div class="facade">
+            <div class="awning" aria-hidden="true">
+              <span class="awning-fold"></span>
+              <span class="awning-fold"></span>
+              <span class="awning-fold"></span>
+              <span class="awning-fold"></span>
+              <span class="awning-fold"></span>
+              <span class="awning-fold"></span>
+            </div>
+
+            <div class="hanging-sign" aria-hidden="true">
+              <span class="sign-rope sign-rope--l"></span>
+              <span class="sign-rope sign-rope--r"></span>
+              <div class="sign-board">{{ translate('game.mistake.sign') }}</div>
+            </div>
+
+            <div class="wall">
+              <div class="diner-chalkboard" aria-hidden="true">
+                <div class="chalk-title">{{ translate('game.mistake.chalkTitle') }}</div>
+                <ul class="chalk-list">
+                  <li>{{ translate('game.mistake.chalkLine1') }}</li>
+                  <li>{{ translate('game.mistake.chalkLine2') }}</li>
+                  <li>{{ translate('game.mistake.chalkLine3') }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="counter-table counter-table--unified" aria-hidden="true">
+              <div class="counter-backline"></div>
+              <div class="counter-props">
+                <span class="prop prop--crate"></span>
+                <span class="prop prop--scale">⚖️</span>
+                <span class="prop prop--basket">🧺</span>
+              </div>
+            </div>
+
+            <div class="counter-top" aria-hidden="true"></div>
+
+            <div *ngFor="let food of foods" #stallTile class="food-spot" [attr.data-food-id]="food.id" [class.food-spot--glow]="activeFood?.id === food.id" [ngStyle]="spotStyle(food)">
+              <div class="food-mat">
+                <span class="food-emoji" aria-hidden="true">{{ food.icon }}</span>
+                <span class="food-label">{{ translate(food.nameKey) }}</span>
+              </div>
+            </div>
           </div>
+
+          <div class="floor" aria-hidden="true"></div>
         </div>
-        <button *ngFor="let m of mistakes" class="mistake-hotspot"
-          [style.left.%]="m.x"
-          [style.top.%]="m.y"
-          [class.found]="m.found"
-          (click)="findMistake(m)">
-          {{ m.found ? '✓' : '?' }}
-        </button>
+
+        <div
+          class="loupe"
+          *ngIf="loupeVisible"
+          role="img"
+          aria-hidden="true"
+          [style.width.px]="loupeSize"
+          [style.height.px]="loupeSize"
+          [style.left.px]="loupeX"
+          [style.top.px]="loupeY"
+        >
+          <div class="loupe-glass"></div>
+          <div class="loupe-handle"></div>
+        </div>
+
+        <div
+          class="inspect-tooltip"
+          *ngIf="activeFood as f"
+          role="tooltip"
+          [class.inspect-tooltip--good]="f.healthy"
+          [class.inspect-tooltip--warn]="!f.healthy"
+          [style.left.px]="loupeX + loupeSize * 0.5"
+          [style.top.px]="loupeY + loupeSize + 10"
+        >
+          <p class="tooltip-badge">{{ f.healthy ? translate('game.mistake.badge.healthy') : translate('game.mistake.badge.unhealthy') }}</p>
+          <p class="tooltip-name">{{ f.icon }} {{ translate(f.nameKey) }}</p>
+          <p class="tooltip-tip">{{ translate(f.tipKey) }}</p>
+        </div>
       </div>
-      <div class="feedback-list">
-        <ng-container *ngFor="let m of mistakes">
-          <p *ngIf="m.found" class="feedback-item">{{ translate(m.message) }}</p>
-        </ng-container>
-      </div>
-      <div class="result" *ngIf="allFound">
-        <p>🎉 {{ translate('game.mistake.allFound') }}</p>
-        <button class="start-button" (click)="startGame()">{{ translate('game.restart') }}</button>
-        <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+
+      <p class="hint-foot">{{ translate('game.mistake.hintFoot') }}</p>
+
+      <div class="actions">
+        <button type="button" class="secondary-btn" (click)="startGame()">{{ translate('game.mistake.reset') }}</button>
+        <button type="button" class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
       </div>
     </div>
   </div>

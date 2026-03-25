@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
+import { GameFeedbackService } from '../../../services/game-feedback.service';
 
 interface Question {
   text: string;
@@ -32,7 +33,8 @@ export class TrueFalseComponent {
 
   constructor(
     private router: Router,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private gameFeedback: GameFeedbackService
   ) {}
 
   translate(key: string): string {
@@ -59,8 +61,10 @@ export class TrueFalseComponent {
     if (correct) {
       this.score += 10;
       this.feedback = '✅ ' + this.translate('game.tf.correct');
+      this.gameFeedback.celebrate();
     } else {
       this.feedback = '❌ ' + this.translate('game.tf.wrong');
+      this.gameFeedback.fail();
     }
   }
 

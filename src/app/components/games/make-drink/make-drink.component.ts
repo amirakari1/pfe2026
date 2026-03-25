@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
+import { GameFeedbackService } from '../../../services/game-feedback.service';
 
 export interface Ingredient {
   id: string;
@@ -65,7 +66,8 @@ export class MakeDrinkComponent {
 
   constructor(
     private router: Router,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private gameFeedback: GameFeedbackService
   ) {}
 
   translate(key: string): string {
@@ -130,6 +132,11 @@ export class MakeDrinkComponent {
         this.blending = false;
         this.currentStep = 'result';
         this.resultShown = true;
+        if (this.healthScore >= 55) {
+          this.gameFeedback.celebrate();
+        } else {
+          this.gameFeedback.fail();
+        }
       }
     }, 150);
   }

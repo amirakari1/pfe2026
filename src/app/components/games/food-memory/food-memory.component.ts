@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
+import { GameFeedbackService } from '../../../services/game-feedback.service';
 
 interface Card {
   id: number;
@@ -32,7 +33,8 @@ export class FoodMemoryComponent {
 
   constructor(
     private router: Router,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private gameFeedback: GameFeedbackService
   ) {}
 
   translate(key: string): string {
@@ -67,6 +69,9 @@ export class FoodMemoryComponent {
     if (a.emoji === b.emoji) {
       a.matched = true;
       b.matched = true;
+      this.gameFeedback.celebrate();
+    } else {
+      this.gameFeedback.fail();
     }
     setTimeout(() => {
       if (!a.matched) a.flipped = false;

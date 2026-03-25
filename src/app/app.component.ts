@@ -6,6 +6,7 @@ import { ThemeService } from './services/theme.service';
   selector: 'app-root',
   template: `
     <router-outlet></router-outlet>
+    <app-game-feedback-overlay></app-game-feedback-overlay>
     <div class="theme-toggle-fixed">
       <app-theme-toggle></app-theme-toggle>
     </div>

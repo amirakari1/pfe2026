@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation.service';
+import { GameFeedbackService } from '../../../services/game-feedback.service';
 
 interface Habit {
   id: string;
@@ -33,7 +34,8 @@ export class HabitBalanceComponent {
 
   constructor(
     private router: Router,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private gameFeedback: GameFeedbackService
   ) {}
 
   translate(key: string): string {
@@ -81,8 +83,10 @@ export class HabitBalanceComponent {
     this.submitted = true;
     if (this.totalScore > 0) {
       this.message = this.translate('game.habit.healthy');
+      this.gameFeedback.celebrate();
     } else {
       this.message = this.translate('game.habit.unhealthy');
+      this.gameFeedback.fail();
     }
   }
 

@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
     { id: 6, title: '', description: '', ageRange: '6-12', category: '', icon: '🧩', route: '/game/food-pyramid' },
     { id: 7, title: '', description: '', ageRange: '8-12', category: '', icon: '👨‍🍳', route: '/game/future-chef' },
     { id: 8, title: '', description: '', ageRange: '6-12', category: '', icon: '⚖️', route: '/game/habit-balance' },
-    { id: 9, title: '', description: '', ageRange: '6-12', category: '', icon: '🕵️', route: '/game/find-mistake' }
+    { id: 9, title: '', description: '', ageRange: '6-12', category: '', icon: '🛒', route: '/game/find-mistake' }
   ];
 
   getGameTitle(gameId: number): string {

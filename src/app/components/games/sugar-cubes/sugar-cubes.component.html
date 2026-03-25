@@ -1,6 +1,6 @@
 <div class="game-container">
   <div class="game-header">
-    <button class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
+    <button type="button" class="home-button" (click)="goHome()">🏠 {{ translate('nav.home') }}</button>
     <h1>🧊 {{ translate('game.sugar.title') }}</h1>
   </div>
 
@@ -9,10 +9,12 @@
       <h2>{{ translate('game.sugar.welcome') }}</h2>
       <p>{{ translate('game.sugar.description') }}</p>
       <p class="dataset-info">{{ drinks.length }} {{ translate('game.sugar.drinksInDataset') }}</p>
-      <button class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
+      <button type="button" class="start-button" (click)="startGame()">{{ translate('game.start') }}</button>
     </div>
 
-    <div class="play-screen" *ngIf="gameStarted && currentDrink">
+    <div class="play-screen" *ngIf="gameStarted && !sessionComplete && currentDrink">
+      <p class="progress-tracker">{{ progressLabel }}</p>
+
       <div class="drink-display" *ngIf="!answered">
         <div class="drink-image">
           <img [src]="currentDrink.image" [alt]="translate(currentDrink.nameKey)" (error)="onImageError($event)">
@@ -23,7 +25,7 @@
           <input type="range" min="0" [max]="maxCubes" [(ngModel)]="userAnswer" class="sugar-slider">
           <span class="slider-value">{{ userAnswer }} {{ translate('game.sugar.cubes') }}</span>
         </div>
-        <button class="submit-button" (click)="submitAnswer()">{{ translate('game.sugar.submit') }}</button>
+        <button type="button" class="submit-button" (click)="submitAnswer()">{{ translate('game.sugar.submit') }}</button>
       </div>
 
       <div class="result-screen" *ngIf="answered && currentDrink">
@@ -38,9 +40,20 @@
         </div>
         <p class="alternative">{{ alternativeMessage }}</p>
         <div class="result-buttons">
-          <button class="next-button" (click)="nextDrink()">{{ translate('game.sugar.next') }}</button>
-          <button class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
+          <button type="button" class="next-button" (click)="nextDrink()">
+            {{ isLastRound ? translate('game.sugar.finish') : translate('game.sugar.next') }}
+          </button>
+          <button type="button" class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
         </div>
+      </div>
+    </div>
+
+    <div class="complete-screen" *ngIf="gameStarted && sessionComplete">
+      <h2>{{ translate('game.sugar.welcome') }}</h2>
+      <p>{{ translate('game.sugar.sessionComplete') }}</p>
+      <div class="complete-actions">
+        <button type="button" class="start-button" (click)="playAgain()">{{ translate('game.sugar.playAgain') }}</button>
+        <button type="button" class="home-button-large" (click)="goHome()">{{ translate('nav.home') }}</button>
       </div>
     </div>
   </div>
