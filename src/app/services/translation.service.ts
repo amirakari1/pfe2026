@@ -686,10 +686,10 @@ export class TranslationService {
       'game.sugar.alt.confiture': 'بديل صحي: فاكهة طازجة أو طبقة رقيقة من العسل',
       'game.sugar.alt.miel': 'طبيعي! استخدم كمية صغيرة. ممتاز مع الشاي.',
 
-      'game.tf.title': 'صح أم خطأ',
+      'game.tf.title': 'صواب أم خطأ',
       'game.tf.welcome': 'اختبر معرفتك بالتغذية!',
-      'game.tf.description': 'أجب صح أو خطأ على أسئلة الصحة.',
-      'game.tf.true': 'صح',
+      'game.tf.description': 'أجب صواب أو خطأ على أسئلة الصحة.',
+      'game.tf.true': 'صواب',
       'game.tf.false': 'خطأ',
       'game.tf.correct': 'صحيح!',
       'game.tf.wrong': 'خطأ!',

@@ -67,16 +67,20 @@
   line-height: 1.7;
 }
 
+.ai-assistant-section {
+  background-color: var(--bg-surface);
+  text-align: center;
+}
+
 .ai-assistant-banner {
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .ai-banner-link {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
+  background: var(--gradient-primary);
   padding: 16px 28px;
   border-radius: 50px;
   color: white;
@@ -84,16 +88,15 @@
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 20px rgba(13, 148, 136, 0.35);
 }
 
 .ai-banner-link:hover {
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--primary-color);
+  filter: brightness(1.05);
   transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
-  border-color: white;
+  border-color: rgba(255, 255, 255, 0.55);
 }
 
 .ai-icon {
@@ -121,6 +124,7 @@
 /* Section Styles */
 .presentation-section,
 .games-section,
+.ai-assistant-section,
 .contact-section {
   padding: 60px 0;
 }
@@ -508,6 +512,7 @@
 
   .presentation-section,
   .games-section,
+  .ai-assistant-section,
   .contact-section {
     padding: 40px 0;
   }

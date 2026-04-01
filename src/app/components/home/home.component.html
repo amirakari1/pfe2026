@@ -7,13 +7,6 @@
         <app-language-switcher></app-language-switcher>
       </div>
       <p class="header-subtitle">{{ translate('app.subtitle') }}</p>
-      <div class="ai-assistant-banner">
-        <a routerLink="/ai-assistant" class="ai-banner-link">
-          <span class="ai-icon">🤖</span>
-          <span class="ai-text">{{ translate('home.ai.banner') }}</span>
-          <span class="ai-arrow">→</span>
-        </a>
-      </div>
     </div>
   </header>
 
@@ -70,6 +63,19 @@
             <button class="game-button" (click)="playGame(game.route)">{{ translate('game.play') }}</button>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Assistant -->
+  <section class="ai-assistant-section" aria-label="AI assistant">
+    <div class="container">
+      <div class="ai-assistant-banner">
+        <a routerLink="/ai-assistant" class="ai-banner-link">
+          <span class="ai-icon">🤖</span>
+          <span class="ai-text">{{ translate('home.ai.banner') }}</span>
+          <span class="ai-arrow">→</span>
+        </a>
       </div>
     </div>
   </section>
